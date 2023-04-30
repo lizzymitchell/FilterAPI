@@ -1,17 +1,20 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        // Create user resource having various properties:
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+        user.put("surname", "Bloggs");
+        user.put("role", "administrator");
+        user.put("age", "35");
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        // Create a filter which matches all administrators older than 30:
+//        Filter filter = ???; // Create a filter using your API.
+//        assert filter.matches(user); // Filter should match.
+//        user.put("age", "25");
+//        assert !filter.matches(user); // Filter should not match.
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
-        }
     }
 }
