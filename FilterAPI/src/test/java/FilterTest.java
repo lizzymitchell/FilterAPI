@@ -64,4 +64,18 @@ class FilterTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+    @Test
+    void test_single_query_field_not_present() throws Exception {
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+
+        List<QueryItem> queryItemList = new ArrayList<QueryItem>();
+        queryItemList.add(new QueryItem(Operator.AND, "role", Equality.EQ, "administrator"));
+
+        Filter filter = new Filter(queryItemList);
+        boolean matches = filter.matches(user);
+
+        assertFalse(matches); // a map with that value does not exist so the match should be false
+    }
+
 }
