@@ -12,6 +12,9 @@ public class Main {
 
         //Create a filter which matches all administrators older than 30:
         Filter filter = new Filter(); // Create a filter using your API.
+        
+        QueryItem queryItem = new QueryItem(Operator.AND, "role", Equality.EQ, "administrator");
+
         assert filter.matches(user); // Filter should match.
 
         //user.put("age", "25");

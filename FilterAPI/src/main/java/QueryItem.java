@@ -1,7 +1,15 @@
 public class QueryItem {
 
-    public String Operator;
+    public QueryItem(){}
+
+    public QueryItem(Operator operator, String field, Equality equality, String value) {
+        Operator = operator;
+        Field = field;
+        Equality = equality;
+        Value = value;
+    }
+    public Operator Operator;
     public String Field;
     public String Value;
-    public String Equality;
+    public Equality Equality;
 }
