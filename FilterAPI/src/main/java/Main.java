@@ -17,7 +17,12 @@ public class Main {
         queryItemList.add(new QueryItem(Operator.AND, "role", Equality.EQ, "administrator"));
         queryItemList.add(new QueryItem(Operator.AND, "age", Equality.GT, "30"));
 
-        Filter filter = new Filter(queryItemList);
+        Filter filter = null;
+        try {
+            filter = new Filter(queryItemList);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         assert filter.matches(user); // Filter should match.
 

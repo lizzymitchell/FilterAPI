@@ -5,7 +5,11 @@ public class Filter {
 
     private List<QueryItem> QueryItemList;
 
-    public Filter(List<QueryItem> queryItemList) {
+    public Filter(List<QueryItem> queryItemList) throws Exception {
+        if (queryItemList.size() < 1) {
+            throw new IllegalArgumentException("At least one QueryItem is required");
+        }
+
         QueryItemList = queryItemList;
     }
 

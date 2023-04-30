@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FilterTest {
 
     @Test
-    void test_example_usage_filter_matches() {
+    void test_example_usage_filter_matches() throws Exception {
 
         Map<String, String> user = new LinkedHashMap<String, String>();
         user.put("firstname", "Joe");
@@ -30,7 +30,7 @@ class FilterTest {
     }
 
     @Test
-    void test_example_usage_filter_does_not_match(){
+    void test_example_usage_filter_does_not_match() throws Exception {
 
         Map<String, String> user = new LinkedHashMap<String, String>();
         user.put("firstname", "Joe");
@@ -48,4 +48,20 @@ class FilterTest {
         boolean matches = filter.matches(user);
         assertFalse(matches); // Filter should not match.
     }
+
+    @Test
+    void test_empty_query_item_list_throws_exception() {
+
+        List<QueryItem> queryItemList = new ArrayList<QueryItem>(); // empty query item list
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Filter(queryItemList);
+        });
+
+        String expectedMessage = "At least one QueryItem is required";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
 }
