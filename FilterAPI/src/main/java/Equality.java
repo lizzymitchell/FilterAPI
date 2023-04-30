@@ -8,4 +8,8 @@ public enum Equality {
     LT,
     LTE,
     REGEX;
+
+    public static EnumSet<Equality> GetNumericalEqualities() {
+        return EnumSet.of(GT, GTE, LT, LTE);
+    }
 }
