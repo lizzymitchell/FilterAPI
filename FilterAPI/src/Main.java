@@ -10,11 +10,11 @@ public class Main {
         user.put("role", "administrator");
         user.put("age", "35");
 
-        // Create a filter which matches all administrators older than 30:
-//        Filter filter = ???; // Create a filter using your API.
-//        assert filter.matches(user); // Filter should match.
-//        user.put("age", "25");
-//        assert !filter.matches(user); // Filter should not match.
+        //Create a filter which matches all administrators older than 30:
+        Filter filter = new Filter(); // Create a filter using your API.
+        assert filter.matches(user); // Filter should match.
 
+        //user.put("age", "25");
+        //assert !filter.matches(user); // Filter should not match.
     }
 }
