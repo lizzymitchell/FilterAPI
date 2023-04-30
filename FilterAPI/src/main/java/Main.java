@@ -12,7 +12,7 @@ public class Main {
         user.put("role", "administrator");
         user.put("age", "35");
 
-        //Create a filter which matches all administrators older than 30:
+        // Create a filter which matches all administrators older than 30:
         List<QueryItem> queryItemList = new ArrayList<QueryItem>();
         queryItemList.add(new QueryItem(Operator.AND, "role", Equality.EQ, "administrator"));
         queryItemList.add(new QueryItem(Operator.AND, "age", Equality.GT, "30"));
