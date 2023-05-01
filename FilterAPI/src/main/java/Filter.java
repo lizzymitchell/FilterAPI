@@ -6,6 +6,12 @@ public class Filter {
     public Filter() {
     }
 
+    private EqualityMatchService equalityMatchService;
+
+    public Filter(EqualityMatchService equalityMatchService) {
+        this.equalityMatchService = equalityMatchService;
+    }
+
     public boolean ListIsMatch(List<QueryItem> list) {
         if (list.size() ==0) {
             return false;

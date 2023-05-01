@@ -4,7 +4,7 @@ import java.util.Set;
 public class FloatEqualityMatchService extends EqualityMatchServiceBaseClass {
 
     @Override
-    public boolean Match(Equality equality, String userValue, String queryValue) {
+    public boolean MatchValue(Equality equality, String userValue, String queryValue) {
         throw new UnsupportedOperationException();
     }
 

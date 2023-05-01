@@ -14,6 +14,6 @@ public class QueryItem {
     public String Field;
     public String Value;
     public Equality Equality;
-    public boolean Matches; // not ideal that this is accessible outside of the filter class
+    public boolean Matches; // not ideal that this is accessible outside the filter class
     public List<QueryItem> SubQueryItemList;
 }
