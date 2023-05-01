@@ -1,4 +1,6 @@
 import org.junit.jupiter.api.Test;
+
+import javax.management.Query;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -144,10 +146,94 @@ class FilterTest {
     }
 
     @Test
-    void matches() {
+    void test_matchItem_empty_user_returns_false() {
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        QueryItem queryItem = new QueryItem(Operator.AND, "role", Equality.EQ, "administrator");
+
+        Filter filter = new Filter();
+        boolean match = filter.matchItem(user,queryItem);
+
+        assertFalse(match);
     }
 
     @Test
-    void testMatches() {
+    void test_matchItem_empty_query_returns_false() {
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+        user.put("surname", "Bloggs");
+        user.put("role", "administrator");
+        user.put("age", "25");
+
+        QueryItem queryItem = new QueryItem();
+
+        Filter filter = new Filter();
+        boolean match = filter.matchItem(user,queryItem);
+
+        assertFalse(match);
+    }
+
+    @Test
+    void test_matchItem_field_not_present_returns_false() {
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+
+        QueryItem queryItem = new QueryItem(Operator.AND, "role", Equality.EQ, "administrator");
+
+        Filter filter = new Filter();
+        boolean match = filter.matchItem(user,queryItem);
+
+        assertFalse(match);
+    }
+
+    @Test
+    void test_matchItem_EQ_value_not_equal_returns_false() {
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+
+        QueryItem queryItem = new QueryItem(Operator.AND, "firstname", Equality.EQ, "Sam");
+
+        Filter filter = new Filter();
+        boolean match = filter.matchItem(user,queryItem);
+
+        assertFalse(match);
+    }
+
+    @Test
+    void test_matchItem_EQ_value_equal_returns_true() {
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+
+        QueryItem queryItem = new QueryItem(Operator.AND, "firstname", Equality.EQ, "Joe");
+
+        Filter filter = new Filter();
+        boolean match = filter.matchItem(user,queryItem);
+
+        assertTrue(match);
+    }
+
+    @Test
+    void test_matchItem_NE_value_not_equal_returns_true() {
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+
+        QueryItem queryItem = new QueryItem(Operator.AND, "firstname", Equality.NE, "Sam");
+
+        Filter filter = new Filter();
+        boolean match = filter.matchItem(user,queryItem);
+
+        assertTrue(match);
+    }
+
+    @Test
+    void test_matchItem_NE_value_equal_returns_false() {
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+
+        QueryItem queryItem = new QueryItem(Operator.AND, "firstname", Equality.NE, "Joe");
+
+        Filter filter = new Filter();
+        boolean match = filter.matchItem(user,queryItem);
+
+        assertFalse(match);
     }
 }

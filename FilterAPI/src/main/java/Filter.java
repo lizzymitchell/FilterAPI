@@ -34,21 +34,24 @@ public class Filter {
             return matches(user, queryItem.SubQueryItemList);
         }
         else {
+            return matchItem(user, queryItem);
+        }
+    }
 
-            if (!user.containsKey(queryItem.Field)) {
-                return false;
-            }
+    public boolean matchItem(Map<String, String> user, QueryItem queryItem){
+        if (!user.containsKey(queryItem.Field)) {
+            return false;
+        }
 
-            String matchValue = user.get(queryItem.Field);
+        String matchValue = user.get(queryItem.Field);
 
-            switch(queryItem.Equality) {
-                case EQ:
-                    return matchValue == queryItem.Value;
-                case NE:
-                    return matchValue != queryItem.Value;
-                default:
-                    throw new UnsupportedOperationException("Equality not supported");
-            }
+        switch(queryItem.Equality) {
+            case EQ:
+                return matchValue == queryItem.Value;
+            case NE:
+                return matchValue != queryItem.Value;
+            default:
+                throw new UnsupportedOperationException("Equality not supported");
         }
     }
 
