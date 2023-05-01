@@ -17,7 +17,9 @@ class FilterTest {
 
         List<QueryItem> queryItemList = new ArrayList<QueryItem>();
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
+
         boolean matches = filter.matches(user, queryItemList);
 
         assertFalse(matches); // a map with that value does not exist so the match should be false
@@ -30,7 +32,8 @@ class FilterTest {
         List<QueryItem> queryItemList = new ArrayList<QueryItem>();
         queryItemList.add(new QueryItem(Operator.AND, "role", Equality.EQ, "administrator"));
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean matches = filter.matches(user, queryItemList);
 
         assertFalse(matches); // a map with that value does not exist so the match should be false
@@ -40,7 +43,8 @@ class FilterTest {
     @Test
     void test_listIsMatch_empty_list_returns_false() {
         List<QueryItem> list = new ArrayList<>();
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
 
         boolean match = filter.ListIsMatch(list);
         assertFalse(match);
@@ -57,7 +61,8 @@ class FilterTest {
         list.add(queryItem);
         list.add(queryItem);
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.ListIsMatch(list);
         assertFalse(match);
     }
@@ -72,7 +77,8 @@ class FilterTest {
         list.add(queryItem);
         list.add(queryItem);
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.ListIsMatch(list);
         assertFalse(match);
     }
@@ -91,7 +97,8 @@ class FilterTest {
         list.add(queryItem);
         list.add(trueQueryItem);
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.ListIsMatch(list);
         assertFalse(match);
     }
@@ -110,7 +117,8 @@ class FilterTest {
         list.add(queryItem);
         list.add(trueQueryItem);
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.ListIsMatch(list);
         assertTrue(match);
     }
@@ -125,7 +133,8 @@ class FilterTest {
         list.add(queryItem);
         list.add(queryItem);
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.ListIsMatch(list);
         assertTrue(match);
     }
@@ -140,7 +149,8 @@ class FilterTest {
         list.add(queryItem);
         list.add(queryItem);
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.ListIsMatch(list);
         assertTrue(match);
     }
@@ -150,7 +160,8 @@ class FilterTest {
         Map<String, String> user = new LinkedHashMap<String, String>();
         QueryItem queryItem = new QueryItem(Operator.AND, "role", Equality.EQ, "administrator");
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.matchItem(user,queryItem);
 
         assertFalse(match);
@@ -166,7 +177,8 @@ class FilterTest {
 
         QueryItem queryItem = new QueryItem();
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.matchItem(user,queryItem);
 
         assertFalse(match);
@@ -179,7 +191,8 @@ class FilterTest {
 
         QueryItem queryItem = new QueryItem(Operator.AND, "role", Equality.EQ, "administrator");
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.matchItem(user,queryItem);
 
         assertFalse(match);
@@ -192,7 +205,8 @@ class FilterTest {
 
         QueryItem queryItem = new QueryItem(Operator.AND, "firstname", Equality.EQ, "Sam");
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.matchItem(user,queryItem);
 
         assertFalse(match);
@@ -205,7 +219,8 @@ class FilterTest {
 
         QueryItem queryItem = new QueryItem(Operator.AND, "firstname", Equality.EQ, "Joe");
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.matchItem(user,queryItem);
 
         assertTrue(match);
@@ -218,7 +233,8 @@ class FilterTest {
 
         QueryItem queryItem = new QueryItem(Operator.AND, "firstname", Equality.NE, "Sam");
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.matchItem(user,queryItem);
 
         assertTrue(match);
@@ -231,7 +247,8 @@ class FilterTest {
 
         QueryItem queryItem = new QueryItem(Operator.AND, "firstname", Equality.NE, "Joe");
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean match = filter.matchItem(user,queryItem);
 
         assertFalse(match);

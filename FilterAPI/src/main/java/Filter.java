@@ -1,13 +1,15 @@
 import java.util.List;
 import java.util.Map;
 
-public class Filter {
+public class Filter implements FilterConsumer {
 
     public Filter() {
     }
 
     private EqualityMatchService equalityMatchService;
 
+    // I want to inject a list of all the services here, not sure how to do that
+    // possibly with spring - instructions say not to do this though!
     public Filter(EqualityMatchService equalityMatchService) {
         this.equalityMatchService = equalityMatchService;
     }
@@ -42,26 +44,20 @@ public class Filter {
         }
     }
 
+    @Override
     public boolean matchItem(Map<String, String> user, QueryItem queryItem){
         if (!user.containsKey(queryItem.Field)) {
             return false;
         }
 
-        String matchValue = user.get(queryItem.Field);
+        String userValue = user.get(queryItem.Field);
 
         // INJECT EQUALITY SERVICES, SO WE CAN HAVE MULTIPLE DIFFERENT ONES HERE
         // THEN WE CAN HANDLE MORE TYPES OF EQUALITY WITHOUT ALTERING THE CODE
         // OPEN / CLOSED PRINCIPLE
         // DEPENDENCY INVERSION PRINCIPLE
 
-        switch(queryItem.Equality) {
-            case EQ:
-                return matchValue == queryItem.Value;
-            case NE:
-                return matchValue != queryItem.Value;
-            default:
-                throw new UnsupportedOperationException("Equality not supported");
-        }
+        return equalityMatchService.MatchValue(queryItem.Equality, userValue, queryItem.Value);
     }
 
     public boolean matches(Map<String, String> user, List<QueryItem> queryItemList) {

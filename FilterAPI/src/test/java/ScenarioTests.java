@@ -23,10 +23,12 @@ public class ScenarioTests {
         queryItemList.add(new QueryItem(Operator.AND, "role", Equality.EQ, "administrator"));
         queryItemList.add(new QueryItem(Operator.AND, "age", Equality.GT, "30"));
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
 
         boolean matches = filter.matches(user, queryItemList);
         assertTrue(matches); // Filter should match.
+        // currently failing as have not written and hooked up float equality match service
     }
 
     @Test
@@ -43,10 +45,12 @@ public class ScenarioTests {
         queryItemList.add(new QueryItem(Operator.AND, "role", Equality.EQ, "administrator"));
         queryItemList.add(new QueryItem(Operator.AND, "age", Equality.GT, "30"));
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
 
         boolean matches = filter.matches(user, queryItemList);
         assertFalse(matches); // Filter should not match.
+        // currently failing as have not written and hooked up float equality match service
     }
 
     @Test
@@ -57,7 +61,8 @@ public class ScenarioTests {
         List<QueryItem> queryItemList = new ArrayList<QueryItem>();
         queryItemList.add(new QueryItem(Operator.AND, "role", Equality.EQ, "administrator"));
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean matches = filter.matches(user, queryItemList);
 
         assertFalse(matches); // a map with that value does not exist so the match should be false
@@ -72,7 +77,8 @@ public class ScenarioTests {
         queryItemList.add(new QueryItem(Operator.AND, "firstname", Equality.EQ, "Sam"));
         queryItemList.add(new QueryItem(Operator.OR, "firstname", Equality.EQ, "Joe"));
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean matches = filter.matches(user, queryItemList);
 
         assertTrue(matches);
@@ -87,7 +93,8 @@ public class ScenarioTests {
         queryItemList.add(new QueryItem(Operator.AND, "firstname", Equality.EQ, "Sam"));
         queryItemList.add(new QueryItem(Operator.OR, "firstname", Equality.EQ, "Frog"));
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean matches = filter.matches(user, queryItemList);
 
         assertFalse(matches);
@@ -119,7 +126,8 @@ public class ScenarioTests {
         nestedQueryItemList.add(nonMatchQueryItem);
         nestedQueryItemList.add(matchQueryItem);
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean matches = filter.matches(user,nestedQueryItemList);
         assertTrue(matches);
     }
@@ -142,7 +150,8 @@ public class ScenarioTests {
         queryList2.add(nestedItem);
         queryList2.add((new QueryItem(Operator.AND, "surname", Equality.EQ, "Bloggs")));
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean matches = filter.matches(user,queryList2);
         assertTrue(matches);
     }
@@ -165,7 +174,8 @@ public class ScenarioTests {
         queryList2.add(nestedItem);
         queryList2.add((new QueryItem(Operator.AND, "surname", Equality.EQ, "Pie")));
 
-        Filter filter = new Filter();
+        EqualityMatchServiceInjector injector = new StringEqualityMatchServiceInjector();
+        Filter filter = injector.getFilter();
         boolean matches = filter.matches(user,queryList2);
         assertFalse(matches);
     }
