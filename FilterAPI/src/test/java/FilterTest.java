@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,9 +22,9 @@ class FilterTest {
         queryItemList.add(new QueryItem(Operator.AND, "role", Equality.EQ, "administrator"));
         queryItemList.add(new QueryItem(Operator.AND, "age", Equality.GT, "30"));
 
-        Filter filter = new Filter(queryItemList);
+        Filter filter = new Filter();
 
-        boolean matches = filter.matches(user);
+        boolean matches = filter.matches(user, queryItemList);
         assertTrue(matches); // Filter should match.
     }
 
@@ -43,25 +42,36 @@ class FilterTest {
         queryItemList.add(new QueryItem(Operator.AND, "role", Equality.EQ, "administrator"));
         queryItemList.add(new QueryItem(Operator.AND, "age", Equality.GT, "30"));
 
-        Filter filter = new Filter(queryItemList);
+        Filter filter = new Filter();
 
-        boolean matches = filter.matches(user);
+        boolean matches = filter.matches(user, queryItemList);
         assertFalse(matches); // Filter should not match.
     }
 
     @Test
-    void test_empty_query_item_list_throws_exception() {
+    void test_empty_query() {
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
 
-        List<QueryItem> queryItemList = new ArrayList<QueryItem>(); // empty query item list
+        List<QueryItem> queryItemList = new ArrayList<QueryItem>();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Filter(queryItemList);
-        });
+        Filter filter = new Filter();
+        boolean matches = filter.matches(user, queryItemList);
 
-        String expectedMessage = "At least one QueryItem is required";
-        String actualMessage = exception.getMessage();
+        assertFalse(matches); // a map with that value does not exist so the match should be false
+    }
 
-        assertTrue(actualMessage.contains(expectedMessage));
+    @Test
+    void test_empty_user(){
+        Map<String, String> user = new LinkedHashMap<String, String>();
+
+        List<QueryItem> queryItemList = new ArrayList<QueryItem>();
+        queryItemList.add(new QueryItem(Operator.AND, "role", Equality.EQ, "administrator"));
+
+        Filter filter = new Filter();
+        boolean matches = filter.matches(user, queryItemList);
+
+        assertFalse(matches); // a map with that value does not exist so the match should be false
     }
 
     @Test
@@ -72,10 +82,71 @@ class FilterTest {
         List<QueryItem> queryItemList = new ArrayList<QueryItem>();
         queryItemList.add(new QueryItem(Operator.AND, "role", Equality.EQ, "administrator"));
 
-        Filter filter = new Filter(queryItemList);
-        boolean matches = filter.matches(user);
+        Filter filter = new Filter();
+        boolean matches = filter.matches(user, queryItemList);
 
         assertFalse(matches); // a map with that value does not exist so the match should be false
+    }
+
+    @Test
+    void test_bottom_level_or_matches() throws Exception {
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+
+        List<QueryItem> queryItemList = new ArrayList<QueryItem>();
+        queryItemList.add(new QueryItem(Operator.AND, "firstname", Equality.EQ, "Sam"));
+        queryItemList.add(new QueryItem(Operator.OR, "firstname", Equality.EQ, "Joe"));
+
+        Filter filter = new Filter();
+        boolean matches = filter.matches(user, queryItemList);
+
+        assertTrue(matches);
+    }
+
+    @Test
+    void test_bottom_level_or_no_matches() throws Exception {
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+
+        List<QueryItem> queryItemList = new ArrayList<QueryItem>();
+        queryItemList.add(new QueryItem(Operator.AND, "firstname", Equality.EQ, "Sam"));
+        queryItemList.add(new QueryItem(Operator.OR, "firstname", Equality.EQ, "Frog"));
+
+        Filter filter = new Filter();
+        boolean matches = filter.matches(user, queryItemList);
+
+        assertFalse(matches);
+    }
+
+    @Test
+    void test_1_level_match_matches(){
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+        user.put("surname", "Bloggs");
+
+        List<QueryItem> nonMatchQueryItemList = new ArrayList<QueryItem>();
+        nonMatchQueryItemList.add(new QueryItem(Operator.AND, "firstname", Equality.EQ, "Sam"));
+        nonMatchQueryItemList.add(new QueryItem(Operator.OR, "firstname", Equality.EQ, "Frog"));
+
+        List<QueryItem> matchQueryItemList = new ArrayList<QueryItem>();
+        matchQueryItemList.add(new QueryItem(Operator.AND, "firstname", Equality.EQ, "Joe"));
+        matchQueryItemList.add(new QueryItem(Operator.AND, "surname", Equality.EQ, "Bloggs"));
+
+        QueryItem nonMatchQueryItem = new QueryItem();
+        nonMatchQueryItem.SubQueryItemList = nonMatchQueryItemList;
+        nonMatchQueryItem.Operator = Operator.OR;
+
+        QueryItem matchQueryItem = new QueryItem();
+        matchQueryItem.SubQueryItemList = matchQueryItemList;
+        matchQueryItem.Operator = Operator.OR;
+
+        List<QueryItem> nestedQueryItemList = new ArrayList<>();
+        nestedQueryItemList.add(nonMatchQueryItem);
+        nestedQueryItemList.add(matchQueryItem);
+
+        Filter filter = new Filter();
+        boolean matches = filter.matches(user,nestedQueryItemList);
+        assertTrue(matches);
     }
 
 }

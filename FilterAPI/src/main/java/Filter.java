@@ -3,34 +3,61 @@ import java.util.Map;
 
 public class Filter {
 
-    private List<QueryItem> QueryItemList;
-
-    public Filter(List<QueryItem> queryItemList) throws Exception {
-        if (queryItemList.size() < 1) {
-            throw new IllegalArgumentException("At least one QueryItem is required");
-        }
-
-        QueryItemList = queryItemList;
+    public Filter() {
     }
 
-    public boolean matches(Map<String, String> user) {
+    public boolean ListIsMatch(List<QueryItem> list) {
 
-        QueryItem queryItem = QueryItemList.get(0);
-        if (!user.containsKey(queryItem.Field)) {
+        if (list.size() ==0) {
             return false;
         }
 
-        // i need to do something fancy and recursive
-        // some kind of nested query items, so you could technically go on forever
-        // also want to dependency inject the filter matching so we could add new equalities and operators later on
+        // all matches are true
+        if (list.stream().allMatch(
+                queryItem -> queryItem.Matches == true
+        )) {
+            return true;
+        }
 
+        // if any of the matches are true and an OR, the whole group of queries is a match
+        if (list.stream().anyMatch(
+                queryItem -> queryItem.Operator == Operator.OR && queryItem.Matches == true)) {
+            return true;
+        }
 
-//        for (final QueryItem queryItem : QueryItemList) {
-//
-//
-//        }
-
-        return true;
+        return false;
     }
 
+    public boolean matches(Map<String, String> user, QueryItem queryItem) {
+
+        if (queryItem.SubQueryItemList != null && queryItem.SubQueryItemList.size() > 0) {
+            return matches(user, queryItem.SubQueryItemList);
+        }
+        else {
+
+            if (!user.containsKey(queryItem.Field)) {
+                return false;
+            }
+
+            String matchValue = user.get(queryItem.Field);
+
+            switch(queryItem.Equality) {
+                case EQ:
+                    return matchValue == queryItem.Value;
+                case NE:
+                    return matchValue != queryItem.Value;
+                default:
+                    throw new UnsupportedOperationException("Equality not supported");
+            }
+        }
+    }
+
+    public boolean matches(Map<String, String> user, List<QueryItem> queryItemList) {
+
+         for (final QueryItem queryItem : queryItemList) {
+             queryItem.Matches = matches(user, queryItem);
+         }
+
+         return ListIsMatch(queryItemList);
+    }
 }
