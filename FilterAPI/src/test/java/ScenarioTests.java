@@ -123,4 +123,50 @@ public class ScenarioTests {
         boolean matches = filter.matches(user,nestedQueryItemList);
         assertTrue(matches);
     }
+
+    @Test
+    void test_unbalanced_query_returns_true(){
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+        user.put("surname", "Bloggs");
+
+        List<QueryItem> queryList1 = new ArrayList<QueryItem>();
+        queryList1.add(new QueryItem(Operator.OR, "firstname", Equality.EQ, "Joe"));
+        queryList1.add(new QueryItem(Operator.OR, "firstname", Equality.EQ, "Frog"));
+
+        QueryItem nestedItem = new QueryItem();
+        nestedItem.SubQueryItemList = queryList1;
+        nestedItem.Operator = Operator.AND;
+
+        List<QueryItem> queryList2 = new ArrayList<QueryItem>();
+        queryList2.add(nestedItem);
+        queryList2.add((new QueryItem(Operator.AND, "surname", Equality.EQ, "Bloggs")));
+
+        Filter filter = new Filter();
+        boolean matches = filter.matches(user,queryList2);
+        assertTrue(matches);
+    }
+
+    @Test
+    void test_unbalanced_query_returns_false(){
+        Map<String, String> user = new LinkedHashMap<String, String>();
+        user.put("firstname", "Joe");
+        user.put("surname", "Bloggs");
+
+        List<QueryItem> queryList1 = new ArrayList<QueryItem>();
+        queryList1.add(new QueryItem(Operator.OR, "firstname", Equality.EQ, "Joe"));
+        queryList1.add(new QueryItem(Operator.OR, "firstname", Equality.EQ, "Frog"));
+
+        QueryItem nestedItem = new QueryItem();
+        nestedItem.SubQueryItemList = queryList1;
+        nestedItem.Operator = Operator.AND;
+
+        List<QueryItem> queryList2 = new ArrayList<QueryItem>();
+        queryList2.add(nestedItem);
+        queryList2.add((new QueryItem(Operator.AND, "surname", Equality.EQ, "Pie")));
+
+        Filter filter = new Filter();
+        boolean matches = filter.matches(user,queryList2);
+        assertFalse(matches);
+    }
 }
