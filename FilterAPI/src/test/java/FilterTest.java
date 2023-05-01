@@ -236,4 +236,6 @@ class FilterTest {
 
         assertFalse(match);
     }
+
+    // could use mocking to unit test that methods are calling other methods
 }
