@@ -7,7 +7,6 @@ public class Filter {
     }
 
     public boolean ListIsMatch(List<QueryItem> list) {
-
         if (list.size() ==0) {
             return false;
         }
@@ -29,7 +28,6 @@ public class Filter {
     }
 
     public boolean matches(Map<String, String> user, QueryItem queryItem) {
-
         if (queryItem.SubQueryItemList != null && queryItem.SubQueryItemList.size() > 0) {
             return matches(user, queryItem.SubQueryItemList);
         }
@@ -61,11 +59,9 @@ public class Filter {
     }
 
     public boolean matches(Map<String, String> user, List<QueryItem> queryItemList) {
-
          for (final QueryItem queryItem : queryItemList) {
              queryItem.Matches = matches(user, queryItem);
          }
-
          return ListIsMatch(queryItemList);
     }
 }
