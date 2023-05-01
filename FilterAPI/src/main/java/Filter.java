@@ -45,6 +45,11 @@ public class Filter {
 
         String matchValue = user.get(queryItem.Field);
 
+        // INJECT EQUALITY SERVICES, SO WE CAN HAVE MULTIPLE DIFFERENT ONES HERE
+        // THEN WE CAN HANDLE MORE TYPES OF EQUALITY WITHOUT ALTERING THE CODE
+        // OPEN / CLOSED PRINCIPLE
+        // DEPENDENCY INVERSION PRINCIPLE
+
         switch(queryItem.Equality) {
             case EQ:
                 return matchValue == queryItem.Value;
