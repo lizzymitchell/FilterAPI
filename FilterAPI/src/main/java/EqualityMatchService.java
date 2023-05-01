@@ -1,6 +1,6 @@
 import java.util.Set;
 
-public interface EqualityMatch {
+public interface EqualityMatchService {
     public boolean Match(Equality equality, String userValue, String queryValue);
     public Set<Equality> supportedEqualities();
 

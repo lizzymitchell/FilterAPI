@@ -1,6 +1,6 @@
 import java.util.Set;
 
-abstract class EqualityMatchBaseClass implements EqualityMatch {
+abstract class EqualityMatchServiceBaseClass implements EqualityMatchService {
 
     @Override
     abstract public Set<Equality> supportedEqualities();
